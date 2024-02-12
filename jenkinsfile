@@ -2,16 +2,27 @@ pipeline {
     agent any
     
     stages {
-        stage('Checkout') {
+        stage('Integration with Version Control') {
             steps {
-                // Checkout the code from Git repository
+                // Checkout code from Git repository
                 git 'https://github.com/S1vasankaran/Jenkins-task.git'
             }
         }
-        stage('Execute Shell Script') {
+        stage('Access Control and Permissions') {
             steps {
-                // Execute your shell script
-                sh './home/ubuntu/Jenkins-task/script.sh'
+                // Setting access control and permissions
+                script {
+                    def currentUser = env.USER // Get current user
+                    if (currentUser != 'sivasankaran') {
+                        error("User ${currentUser} does not have permission to trigger this job.")
+                    }
+                }
+               // Adding Notification setup
+            }
+        }
+        stage('Notification Setup') {
+            steps {
+                // Adding build steps here
             }
         }
     }
@@ -34,4 +45,3 @@ pipeline {
         }
     }
 }
-
