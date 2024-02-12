@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the code from Git repository
+                git 'https://github.com/S1vasankaran/Jenkins-task.git'
+            }
+        }
+        stage('Execute Shell Script') {
+            steps {
+                // Execute your shell script
+                sh './home/ubuntu/Jenkins-task/script.sh'
+            }
+        }
+    }
+    post {
+        success {
+            // Notification for successful build
+            emailext (
+                to: 'guvisiva5@gmail.com',
+                subject: 'Pipeline Success',
+                body: 'Your Jenkins pipeline has completed successfully.'
+            )
+        }
+        failure {
+            // Notification for failed build
+            emailext (
+                to: 'guvisiva5@gmail.com',
+                subject: 'Pipeline Failure',
+                body: 'Your Jenkins pipeline has failed. Please check the logs for more details.'
+            )
+        }
+    }
+}
+
